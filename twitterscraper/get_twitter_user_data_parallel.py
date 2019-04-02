@@ -46,14 +46,27 @@ def main(args):
     for user in pool.map(get_user_info, users):
         twitter_user_info.append(user)
 
-    cols = ['id', 'fullname', 'date_joined', 'location', 'blog', 'num_tweets', 'following', 'followers', 'likes',
-            'lists']
+    cols = [
+        'id',
+        'fullname',
+        'date_joined',
+        'location',
+        'blog',
+        'num_tweets',
+        'following',
+        'followers',
+        'likes',
+        'lists']
     data_frame = pd.DataFrame(twitter_user_info, index=users, columns=cols)
     data_frame.index.name = "Users"
-    data_frame.sort_values(by="followers", ascending=False, inplace=True, kind='quicksort', na_position='last')
+    data_frame.sort_values(
+        by="followers",
+        ascending=False,
+        inplace=True,
+        kind='quicksort',
+        na_position='last')
     display(data_frame)
 
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-

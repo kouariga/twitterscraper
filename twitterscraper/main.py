@@ -29,6 +29,7 @@ class JSONEncoder(json.JSONEncoder):
 
         return json.JSONEncoder.default(self, obj)
 
+
 def valid_date(s):
     try:
         return dt.datetime.strptime(s, "%Y-%m-%d").date()
@@ -36,11 +37,12 @@ def valid_date(s):
         msg = "Not a valid date: '{0}'.".format(s)
         raise argparse.ArgumentTypeError(msg)
 
+
 def main():
     try:
-        parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
-            description=__doc__
-        )
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.RawTextHelpFormatter,
+            description=__doc__)
 
         parser.add_argument("query", type=str, help="Advanced twitter query")
         parser.add_argument("-o", "--output", type=str, default="tweets.json",
@@ -48,40 +50,70 @@ def main():
                                  "tweets to.")
         parser.add_argument("-l", "--limit", type=int, default=None,
                             help="Number of minimum tweets to gather.")
-        parser.add_argument("-a", "--all", action='store_true',
-                            help="Set this flag if you want to get all tweets "
-                                 "in the history of twitter. Begindate is set to 2006-03-01."
-                                 "This may take a while. You can increase the number of parallel"
-                                 "processes depending on the computational power you have.")
-        parser.add_argument("-c", "--csv", action='store_true',
-                                help="Set this flag if you want to save the results to a CSV format.")
-        parser.add_argument("-u", "--user", action='store_true',
-                            help="Set this flag to if you want to scrape tweets from a specific user"
-                                 "The query should then consist of the profilename you want to scrape without @")
-        parser.add_argument("--lang", type=str, default=None,
-                            help="Set this flag if you want to query tweets in \na specific language. You can choose from:\n"
-                                 "en (English)\nar (Arabic)\nbn (Bengali)\n"
-                                 "cs (Czech)\nda (Danish)\nde (German)\nel (Greek)\nes (Spanish)\n"
-                                 "fa (Persian)\nfi (Finnish)\nfil (Filipino)\nfr (French)\n"
-                                 "he (Hebrew)\nhi (Hindi)\nhu (Hungarian)\n"
-                                 "id (Indonesian)\nit (Italian)\nja (Japanese)\n"
-                                 "ko (Korean)\nmsa (Malay)\nnl (Dutch)\n"
-                                 "no (Norwegian)\npl (Polish)\npt (Portuguese)\n"
-                                 "ro (Romanian)\nru (Russian)\nsv (Swedish)\n"
-                                 "th (Thai)\ntr (Turkish)\nuk (Ukranian)\n"
-                                 "ur (Urdu)\nvi (Vietnamese)\n"
-                                 "zh-cn (Chinese Simplified)\n"
-                                 "zh-tw (Chinese Traditional)"
-                                 )
-        parser.add_argument("-d", "--dump", action="store_true",
-                            help="Set this flag if you want to dump the tweets \nto the console rather than outputting to a file")
-        parser.add_argument("-bd", "--begindate", type=valid_date, default="2006-03-21",
-                            help="Scrape for tweets starting from this date. Format YYYY-MM-DD. \nDefault value is 2006-03-21", metavar='\b')
-        parser.add_argument("-ed", "--enddate", type=valid_date, default=dt.date.today(),
-                            help="Scrape for tweets until this date. Format YYYY-MM-DD. \nDefault value is the date of today.", metavar='\b')
-        parser.add_argument("-p", "--poolsize", type=int, default=20, help="Specify the number of parallel process you want to run. \n"
-                            "Default value is set to 20. \nYou can change this number if you have more computing power available. \n"
-                            "Set to 1 if you dont want to run any parallel processes.", metavar='\b')
+        parser.add_argument(
+            "-a",
+            "--all",
+            action='store_true',
+            help="Set this flag if you want to get all tweets "
+            "in the history of twitter. Begindate is set to 2006-03-01."
+            "This may take a while. You can increase the number of parallel"
+            "processes depending on the computational power you have.")
+        parser.add_argument(
+            "-c",
+            "--csv",
+            action='store_true',
+            help="Set this flag if you want to save the results to a CSV format.")
+        parser.add_argument(
+            "-u",
+            "--user",
+            action='store_true',
+            help="Set this flag to if you want to scrape tweets from a specific user"
+            "The query should then consist of the profilename you want to scrape without @")
+        parser.add_argument(
+            "--lang",
+            type=str,
+            default=None,
+            help="Set this flag if you want to query tweets in \na specific language. You can choose from:\n"
+            "en (English)\nar (Arabic)\nbn (Bengali)\n"
+            "cs (Czech)\nda (Danish)\nde (German)\nel (Greek)\nes (Spanish)\n"
+            "fa (Persian)\nfi (Finnish)\nfil (Filipino)\nfr (French)\n"
+            "he (Hebrew)\nhi (Hindi)\nhu (Hungarian)\n"
+            "id (Indonesian)\nit (Italian)\nja (Japanese)\n"
+            "ko (Korean)\nmsa (Malay)\nnl (Dutch)\n"
+            "no (Norwegian)\npl (Polish)\npt (Portuguese)\n"
+            "ro (Romanian)\nru (Russian)\nsv (Swedish)\n"
+            "th (Thai)\ntr (Turkish)\nuk (Ukranian)\n"
+            "ur (Urdu)\nvi (Vietnamese)\n"
+            "zh-cn (Chinese Simplified)\n"
+            "zh-tw (Chinese Traditional)")
+        parser.add_argument(
+            "-d",
+            "--dump",
+            action="store_true",
+            help="Set this flag if you want to dump the tweets \nto the console rather than outputting to a file")
+        parser.add_argument(
+            "-bd",
+            "--begindate",
+            type=valid_date,
+            default="2006-03-21",
+            help="Scrape for tweets starting from this date. Format YYYY-MM-DD. \nDefault value is 2006-03-21",
+            metavar='\b')
+        parser.add_argument(
+            "-ed",
+            "--enddate",
+            type=valid_date,
+            default=dt.date.today(),
+            help="Scrape for tweets until this date. Format YYYY-MM-DD. \nDefault value is the date of today.",
+            metavar='\b')
+        parser.add_argument(
+            "-p",
+            "--poolsize",
+            type=int,
+            default=20,
+            help="Specify the number of parallel process you want to run. \n"
+            "Default value is set to 20. \nYou can change this number if you have more computing power available. \n"
+            "Set to 1 if you dont want to run any parallel processes.",
+            metavar='\b')
         args = parser.parse_args()
 
         if isfile(args.output) and not args.dump:
@@ -89,14 +121,18 @@ def main():
             exit(-1)
 
         if args.all:
-            args.begindate = dt.date(2006,3,1)
+            args.begindate = dt.date(2006, 3, 1)
 
         if args.user:
-            tweets = query_tweets_from_user(user = args.query, limit = args.limit)
+            tweets = query_tweets_from_user(user=args.query, limit=args.limit)
         else:
-            tweets = query_tweets(query = args.query, limit = args.limit,
-                              begindate = args.begindate, enddate = args.enddate,
-                              poolsize = args.poolsize, lang = args.lang)
+            tweets = query_tweets(
+                query=args.query,
+                limit=args.limit,
+                begindate=args.begindate,
+                enddate=args.enddate,
+                poolsize=args.poolsize,
+                lang=args.lang)
 
         if args.dump:
             print(json.dumps(tweets, cls=JSONEncoder))
@@ -105,11 +141,27 @@ def main():
                 with open(args.output, "w", encoding="utf-8") as output:
                     if args.csv:
                         f = csv.writer(output)
-                        f.writerow(["user", "fullname", "tweet-id", "timestamp", "url", "likes", "replies", "retweets", "text", "html"])
+                        f.writerow(["user",
+                                    "fullname",
+                                    "tweet-id",
+                                    "timestamp",
+                                    "url",
+                                    "likes",
+                                    "replies",
+                                    "retweets",
+                                    "text",
+                                    "html"])
                         for x in tweets:
-                            f.writerow([x.user, x.fullname, x.id, x.timestamp, x.url,
-                                        x.likes, x.replies, x.retweets,
-                                        x.text, x.html])
+                            f.writerow([x.user,
+                                        x.fullname,
+                                        x.id,
+                                        x.timestamp,
+                                        x.url,
+                                        x.likes,
+                                        x.replies,
+                                        x.retweets,
+                                        x.text,
+                                        x.html])
                     else:
                         json.dump(tweets, output, cls=JSONEncoder)
     except KeyboardInterrupt:
